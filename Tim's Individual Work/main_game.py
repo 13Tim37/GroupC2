@@ -163,6 +163,7 @@ class MyPyGame(object):
                 pos_x=x
                 pos_y=y
                 self.screen.blit(ship,(pos_x,pos_y))
+                # Call the asteroid update function, checking if ship hits an asteroid.
                 self.asteroidMovement(self.A_list, pos_x, pos_y)
                 if self.health >=70:
                     healthLabel = self.freeSansBold.render("Ship health: " + str(self.health), 1, (255,255,255))
@@ -401,6 +402,10 @@ class MyPyGame(object):
             pygame.display.update()
 
     def ship_crash(self):
+        """
+        Call this function to display the game over screen when the ship has no health left.
+        """
+    
         print("You are dead!")
         exitGame=False
         self.screen.blit(self.held_image,(0,0))
@@ -456,7 +461,11 @@ class MyPyGame(object):
         self.Glist[(x,y)]=True
         return (self.Glist)
 
-    def randomAsteroidSpawn(self):
+    def randomAsteroidSpawn(self)
+            """
+            This function generates random spawn points for asteroid along the top and bottom of the screen.
+            Returns x and y co-ordinates.
+            """
             x = randrange(30,1270,30)
             yChoice = randint(0,1)
             if yChoice == 0:
@@ -466,6 +475,16 @@ class MyPyGame(object):
             return x, y
     
     def asteroidMovement(self, A_list, shipX, shipY):
+        """
+        This function runs through the list of asteroids and updates their positions based on their speed.
+        It occupies the space in the GList where the new asteroid is and de occupies the space where is used to be.
+        Then there are checks on the location of the ship. If it is inside an asteroid it looses the appropriate amount of health.
+        Checks is 0 or less health is left. If so the ship crashes.
+        Takes 3 inputs:
+        1: A_list = List of asteroids.
+        2: shipX = x coordinate of ship.
+        3: shipY = y coordinate of ship.
+        """
         #print(str(shipX), str(shipY))
         for item in A_list:
             
@@ -506,6 +525,11 @@ class MyPyGame(object):
             
 		
     def random_object_generator(self,nr):
+        """
+        This function generates 2 or 3 sun obstacles, 4 to 10 asteroids and nr random shapes.
+        Input:
+        1: nr = number of random shapes.
+        """
             self.objects=[]
             self.obstacles=[]
             self.Glist=self.create_grid()
@@ -537,7 +561,7 @@ class MyPyGame(object):
                     self.obstacles.append(ob4)
 
             # ASTEROIDS #
-            rand_asteroid = randint(7,10)
+            rand_asteroid = randint(4,10)
             while rand_asteroid != 0:
                 rand_dimension = randint(15,35)
                 x_rand, y_rand = self.randomAsteroidSpawn()
@@ -612,16 +636,9 @@ class MyPyGame(object):
                                     self.Glist=self.occupy_grid(x,y)
                             ob3=Rectangle(rand_x,rand_y,price,45,self.screen,colours[rand_colour])
                             self.objects.append(ob3)
-                            nr=nr-1
-
-    ##        asteroid = True
-    ##        while asteroid == True:
-    ##            a1 = Asteroid(rand_x, rand_y, 35, self.screen, "grey")
-    ##            asteroid = False
-                    
+                            nr=nr-1                    
                 
             pygame.display.update()
-
 
     def button(self,x,y,img1,img,action=None):
         mouse=pygame.mouse.get_pos()
