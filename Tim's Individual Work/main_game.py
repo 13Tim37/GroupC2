@@ -112,7 +112,10 @@ class MyPyGame(object):
                     self.de_occupy_grid(i,j)
         a=A_star(end,start,Glist)
         self.path=a.solve()
-        first_x,first_y=self.path[0]
+        try:
+            first_x,first_y=self.path[0]
+        except:
+            print("TypeError: 'NoneType' object is not subscriptable")
         
 
         while not exitGame:
@@ -502,10 +505,10 @@ class MyPyGame(object):
             for xi in range(x-(item.diameter),x+(item.diameter), 1):
                         for yi in range(y-(item.diameter-5),y+(item.diameter-5), 1):
                             self.Glist=self.de_occupy_grid(xi ,yi)
-            for xi in range(item.x1-(item.diameter-10),item.x1+(item.diameter-10), 1):
-                        for yi in range(item.y1-(item.diameter-10),item.y1+(item.diameter-10), 1):
-                            self.Glist=self.de_occupy_grid(xi ,yi)
-                            self.Glist=self.occupy_grid(xi+vx,yi+vy)
+            for xj in range(item.x1-(item.diameter-10),item.x1+(item.diameter-10), 1):
+                        for yj in range(item.y1-(item.diameter-14),item.y1+(item.diameter-14), 1):
+                            self.Glist=self.de_occupy_grid(xj ,yj)
+                            self.Glist=self.occupy_grid(xj+vx,yj+vy)
 
             if shipX <= item.x1+(item.diameter+5) and shipX >= item.x1-(item.diameter+5) and shipY >= item.y1-(item.diameter+5) and shipY <= item.y1+(item.diameter+5):
                 print("The ship has crashed into an asteroid!")
