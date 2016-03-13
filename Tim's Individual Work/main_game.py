@@ -461,7 +461,7 @@ class MyPyGame(object):
         self.Glist[(x,y)]=True
         return (self.Glist)
 
-    def randomAsteroidSpawn(self)
+    def randomAsteroidSpawn(self):
             """
             This function generates random spawn points for asteroid along the top and bottom of the screen.
             Returns x and y co-ordinates.
@@ -530,115 +530,116 @@ class MyPyGame(object):
         Input:
         1: nr = number of random shapes.
         """
-            self.objects=[]
-            self.obstacles=[]
-            self.Glist=self.create_grid()
-            rand_obst=randint(2,3)
-            while rand_obst!=0:
-            
-                rand_dimension=randint(45,60)
+        
+        self.objects=[]
+        self.obstacles=[]
+        self.Glist=self.create_grid()
+        rand_obst=randint(2,3)
+        while rand_obst!=0:
+        
+            rand_dimension=randint(45,60)
 
-                i=randint(0,len(self.Glist)-1)
+            i=randint(0,len(self.Glist)-1)
 
-                pos=list(self.Glist)[i]
+            pos=list(self.Glist)[i]
 
-                rand_x=pos[0]
-                rand_y=pos[1]
-                ok=1
-                #checking if the position is available
+            rand_x=pos[0]
+            rand_y=pos[1]
+            ok=1
+            #checking if the position is available
+            for x in range(rand_x-60,rand_x+61,30):
+                for y in range(rand_y-60,rand_y+61,30):
+                    if  (x,y)in self.Glist and self.Glist[(x,y)]==True:
+                        pass
+                    else:
+                        ok=0
+            if ok:
                 for x in range(rand_x-60,rand_x+61,30):
                     for y in range(rand_y-60,rand_y+61,30):
-                        if  (x,y)in self.Glist and self.Glist[(x,y)]==True:
-                            pass
-                        else:
-                            ok=0
-                if ok:
-                    for x in range(rand_x-60,rand_x+61,30):
-                        for y in range(rand_y-60,rand_y+61,30):
-                            self.Glist=self.occupy_grid(x,y)
-                    ob4=Circle(rand_x,rand_y,rand_dimension,self.screen,self.yellow)
-                    rand_obst=rand_obst-1
-                    self.obstacles.append(ob4)
+                        self.Glist=self.occupy_grid(x,y)
+                ob4=Circle(rand_x,rand_y,rand_dimension,self.screen,self.yellow)
+                rand_obst=rand_obst-1
+                self.obstacles.append(ob4)
 
-            # ASTEROIDS #
-            rand_asteroid = randint(4,10)
-            while rand_asteroid != 0:
-                rand_dimension = randint(15,35)
-                x_rand, y_rand = self.randomAsteroidSpawn()
-                a1=Asteroid(x_rand,y_rand,rand_dimension,self.screen,self.grey)
-                for x in range(x_rand-rand_dimension,x_rand+rand_dimension, 1):
-                        for y in range(y_rand-rand_dimension,y_rand+rand_dimension, 1):
-                            self.Glist=self.occupy_grid(x,y)
-                rand_asteroid=rand_asteroid-1
-                self.obstacles.append(a1)
-                self.A_list.append(a1)
-            # ASTEROIDS #
+        # ASTEROIDS #
+        rand_asteroid = randint(4,10)
+        while rand_asteroid != 0:
+            rand_dimension = randint(15,35)
+            x_rand, y_rand = self.randomAsteroidSpawn()
+            a1=Asteroid(x_rand,y_rand,rand_dimension,self.screen,self.grey)
+            for x in range(x_rand-rand_dimension,x_rand+rand_dimension, 1):
+                    for y in range(y_rand-rand_dimension,y_rand+rand_dimension, 1):
+                        self.Glist=self.occupy_grid(x,y)
+            rand_asteroid=rand_asteroid-1
+            self.obstacles.append(a1)
+            self.A_list.append(a1)
+        # ASTEROIDS #
 
 
-            while nr>0:
-                    
-                    rand_shape=randint(1,3)
-                    rand_colour=randint(1,3)
-                    colours={1:self.red,2:self.blue,3:self.green}
-                    if rand_colour==1:
-                        price=randint(4,6)
-                    elif rand_colour==2:
-                        price=randint(7,9)
-                    elif rand_colour==3:
-                        price=randint(1,3)
-                    j=randint(0,len(self.Glist)-1)
-                    pos=list(self.Glist)[j]
-                    rand_x=pos[0]
-                    rand_y=pos[1]
-                    if rand_shape==1:
-                        ok=1
-                        for x in range(rand_x,rand_x+31,30):
-                            for y in range(rand_y,rand_y+31,30):
-                                if  (x,y)in self.Glist and self.Glist[(x,y)]==True:
-                                    pass
-                                else:
-                                    ok=0
-                        if ok:
-                            for x in range(rand_x,rand_x+31,30):
-                                for y in range(rand_y,rand_y+31,30):
-                                    self.Glist=self.occupy_grid(x,y)
-                            ob1=Square(rand_x,rand_y,price,45,self.screen,colours[rand_colour])
-                            self.objects.append(ob1)
-                            nr=nr-1
-                    elif rand_shape==2:
-                        ok=1
-                        for x in range(rand_x,rand_x+31,30):
-                            for y in range(rand_y,rand_y+31,30):
-                                
-                                if  (x,y)in self.Glist and self.Glist[(x,y)]==True:
-                                    pass
-                                else:
-                                    ok=0
-                                    
-                        if ok:
-                            for x in range(rand_x,rand_x+31,30):
-                                for y in range(rand_y,rand_y+31,30):
-                                    self.Glist=self.occupy_grid(x,y)
-                            ob2=Triangle(rand_x,rand_y,price,45,self.screen,colours[rand_colour])
-                            self.objects.append(ob2)
-                            nr=nr-1
-                    elif rand_shape==3:
-                        ok=1
-                        for x in range(rand_x,rand_x+31,30):
-                            for y in range(rand_y,rand_y+31,30):
-                                if  (x,y)in self.Glist and self.Glist[(x,y)]==True:
-                                    pass
-                                else:
-                                    ok=0
-                        if ok:
-                            for x in range(rand_x,rand_x+31,30):
-                                for y in range(rand_y,rand_y+31,30):
-                                    self.Glist=self.occupy_grid(x,y)
-                            ob3=Rectangle(rand_x,rand_y,price,45,self.screen,colours[rand_colour])
-                            self.objects.append(ob3)
-                            nr=nr-1                    
+        while nr>0:
                 
-            pygame.display.update()
+                rand_shape=randint(1,3)
+                rand_colour=randint(1,3)
+                colours={1:self.red,2:self.blue,3:self.green}
+                if rand_colour==1:
+                    price=randint(4,6)
+                elif rand_colour==2:
+                    price=randint(7,9)
+                elif rand_colour==3:
+                    price=randint(1,3)
+                j=randint(0,len(self.Glist)-1)
+                pos=list(self.Glist)[j]
+                rand_x=pos[0]
+                rand_y=pos[1]
+                if rand_shape==1:
+                    ok=1
+                    for x in range(rand_x,rand_x+31,30):
+                        for y in range(rand_y,rand_y+31,30):
+                            if  (x,y)in self.Glist and self.Glist[(x,y)]==True:
+                                pass
+                            else:
+                                ok=0
+                    if ok:
+                        for x in range(rand_x,rand_x+31,30):
+                            for y in range(rand_y,rand_y+31,30):
+                                self.Glist=self.occupy_grid(x,y)
+                        ob1=Square(rand_x,rand_y,price,45,self.screen,colours[rand_colour])
+                        self.objects.append(ob1)
+                        nr=nr-1
+                elif rand_shape==2:
+                    ok=1
+                    for x in range(rand_x,rand_x+31,30):
+                        for y in range(rand_y,rand_y+31,30):
+                            
+                            if  (x,y)in self.Glist and self.Glist[(x,y)]==True:
+                                pass
+                            else:
+                                ok=0
+                                
+                    if ok:
+                        for x in range(rand_x,rand_x+31,30):
+                            for y in range(rand_y,rand_y+31,30):
+                                self.Glist=self.occupy_grid(x,y)
+                        ob2=Triangle(rand_x,rand_y,price,45,self.screen,colours[rand_colour])
+                        self.objects.append(ob2)
+                        nr=nr-1
+                elif rand_shape==3:
+                    ok=1
+                    for x in range(rand_x,rand_x+31,30):
+                        for y in range(rand_y,rand_y+31,30):
+                            if  (x,y)in self.Glist and self.Glist[(x,y)]==True:
+                                pass
+                            else:
+                                ok=0
+                    if ok:
+                        for x in range(rand_x,rand_x+31,30):
+                            for y in range(rand_y,rand_y+31,30):
+                                self.Glist=self.occupy_grid(x,y)
+                        ob3=Rectangle(rand_x,rand_y,price,45,self.screen,colours[rand_colour])
+                        self.objects.append(ob3)
+                        nr=nr-1                    
+            
+        pygame.display.update()
 
     def button(self,x,y,img1,img,action=None):
         mouse=pygame.mouse.get_pos()
