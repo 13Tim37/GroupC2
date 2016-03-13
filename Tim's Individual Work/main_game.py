@@ -480,10 +480,15 @@ class MyPyGame(object):
             item.x1 = x+vx
             item.y1 = y+vy
             #item.update_print_obj(x+vx, y+vy)
-            self.Glist=self.de_occupy_grid(x ,y)
-            self.Glist=self.occupy_grid(x+vx,y+vy)
+            for xi in range(x-(item.diameter),x+(item.diameter), 1):
+                        for yi in range(y-(item.diameter-5),y+(item.diameter-5), 1):
+                            self.Glist=self.de_occupy_grid(xi ,yi)
+            for xi in range(item.x1-(item.diameter-10),item.x1+(item.diameter-10), 1):
+                        for yi in range(item.y1-(item.diameter-10),item.y1+(item.diameter-10), 1):
+                            self.Glist=self.de_occupy_grid(xi ,yi)
+                            self.Glist=self.occupy_grid(xi+vx,yi+vy)
 
-            if shipX <= item.x1+(item.diameter+3) and shipX >= item.x1-(item.diameter+3) and shipY >= item.y1-(item.diameter+3) and shipY <= item.y1+(item.diameter+3):
+            if shipX <= item.x1+(item.diameter+5) and shipX >= item.x1-(item.diameter+5) and shipY >= item.y1-(item.diameter+5) and shipY <= item.y1+(item.diameter+5):
                 print("The ship has crashed into an asteroid!")
                 damage = 0
                 if item.diameter >= 30:
@@ -532,7 +537,7 @@ class MyPyGame(object):
                     self.obstacles.append(ob4)
 
             # ASTEROIDS #
-            rand_asteroid = randint(3,8)
+            rand_asteroid = randint(7,10)
             while rand_asteroid != 0:
                 rand_dimension = randint(15,35)
                 x_rand, y_rand = self.randomAsteroidSpawn()
