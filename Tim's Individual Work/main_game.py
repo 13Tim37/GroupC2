@@ -164,8 +164,14 @@ class MyPyGame(object):
                 pos_y=y
                 self.screen.blit(ship,(pos_x,pos_y))
                 self.asteroidMovement(self.A_list, pos_x, pos_y)
-
-                healthLabel = self.freeSansBold.render("Ship health: " + str(self.health), 1, (255,255,255))
+                if self.health >=70:
+                    healthLabel = self.freeSansBold.render("Ship health: " + str(self.health), 1, (255,255,255))
+                elif self. health >= 50 and self.health < 70:
+                    healthLabel = self.freeSansBold.render("Ship health: " + str(self.health), 1, (255,255,0))
+                elif self. health >= 25 and self.health < 50:
+                    healthLabel = self.freeSansBold.render("Ship health: " + str(self.health), 1, (255,162,0)) 
+                else:
+                    healthLabel = self.freeSansBold.render("Ship health: " + str(self.health), 1, (255,0,0))
                 self.screen.blit(healthLabel, (30, 600))
                 
                 pygame.display.update()
@@ -392,7 +398,21 @@ class MyPyGame(object):
             sort=pygame.image.load('sort_img.png')
             sort1=pygame.image.load('sort1_img.png')
             self.button((self.display_width/2)-100,(self.display_height/2)-50,sort1,sort,"sort")
-            pygame.display.update()  
+            pygame.display.update()
+
+    def ship_crash(self):
+        print("You are dead!")
+        exitGame=False
+        self.screen.blit(self.held_image,(0,0))
+        while not exitGame:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:
+                    pygame.quit()
+                    quit()
+            gameOverImage=pygame.image.load("gameOver.png")
+            self.button((self.display_width/2)-100,(self.display_height/2)-50, gameOverImage, gameOverImage,"quit")
+            pygame.display.update()
+        
     def game(self,x,y):
         self.sort_list=[]
         exitGame=False
@@ -446,14 +466,12 @@ class MyPyGame(object):
             return x, y
     
     def asteroidMovement(self, A_list, shipX, shipY):
-        print(str(shipX), str(shipY))
+        #print(str(shipX), str(shipY))
         for item in A_list:
             
             x = item.x1
             y = item.y1
 
-            #vx = randint(-10,10)
-            #vy = randint(10,25)
             vx = item.vx
             vy = item.vy
             
@@ -465,15 +483,21 @@ class MyPyGame(object):
             self.Glist=self.de_occupy_grid(x ,y)
             self.Glist=self.occupy_grid(x+vx,y+vy)
 
-            #shipX = self.start_pos[0]
-            #shipY = self.start_pos[1]
-
-
-            if shipX <= item.x1+(item.diameter+5) and shipX >= item.x1-(item.diameter+5) and shipY >= item.y1-(item.diameter+5) and shipY <= item.y1+(item.diameter+5):
+            if shipX <= item.x1+(item.diameter+3) and shipX >= item.x1-(item.diameter+3) and shipY >= item.y1-(item.diameter+3) and shipY <= item.y1+(item.diameter+3):
                 print("The ship has crashed into an asteroid!")
-                self.health = self.health - 50
+                damage = 0
+                if item.diameter >= 30:
+                    damage = 40
+                elif item.diameter >= 25 and item.diameter < 30:
+                    damage = 30
+                elif item.diameter >= 20 and item.diameter < 25:
+                    damage = 20
+                elif item.diameter >= 15 and item.diameter < 20:
+                    damage = 10
+                        
+                self.health = self.health - damage
                 if self.health <= 0:
-                    print("You are dead!")
+                    self.ship_crash()
             
 		
     def random_object_generator(self,nr):
@@ -508,7 +532,7 @@ class MyPyGame(object):
                     self.obstacles.append(ob4)
 
             # ASTEROIDS #
-            rand_asteroid = randint(3,6)
+            rand_asteroid = randint(3,8)
             while rand_asteroid != 0:
                 rand_dimension = randint(15,35)
                 x_rand, y_rand = self.randomAsteroidSpawn()

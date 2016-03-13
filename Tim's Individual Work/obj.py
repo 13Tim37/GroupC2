@@ -109,9 +109,9 @@ class Asteroid(Object):
 
         def randomVelocity(self, y):
                 if y <= 100:
-                        return randint(-5,5), randint(5,10)
+                        return randint(-10,10), randint(5,15)
                 elif y >= 500:
-                        return randint(-5,5), randint(-10,-5)
+                        return randint(-10,10), randint(-15,-5)
         
         def __str__(self):
                 return(__class__.__name__ + " of size " + str(self.diameter))
